@@ -17,10 +17,13 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"os"
+	"path"
+
+	"github.com/spf13/cobra"
 
 	homedir "github.com/mitchellh/go-homedir"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 
@@ -29,16 +32,10 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "mind",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
+	Short: "A handy tool to carry out your day to day work",
+	Run: func(cmd *cobra.Command, args []string) {
+		log.Println("In root command run")
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -57,35 +54,45 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.mind.yaml)")
+	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.mind.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
-// initConfig reads in config file and ENV variables if set.
+// initConfig creates a config file if it does not exist
 func initConfig() {
-	if cfgFile != "" {
-		// Use config file from the flag.
-		viper.SetConfigFile(cfgFile)
-	} else {
-		// Find home directory.
-		home, err := homedir.Dir()
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-
-		// Search config in home directory with name ".mind" (without extension).
-		viper.AddConfigPath(home)
-		viper.SetConfigName(".mind")
+	// Find home directory.
+	home, err := homedir.Dir()
+	if err != nil {
+		log.Printf("Error when fetching home directory\n%v", err)
+		os.Exit(1)
 	}
 
-	viper.AutomaticEnv() // read in environment variables that match
+	configPath := path.Join(home, ".mind.yaml")
 
-	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
+	if _, err := os.Stat(configPath); err == nil {
+		return
 	}
+
+	_, err = os.Create(configPath)
+	if err != nil {
+		log.Printf("Error when creating config file\n%v", err)
+		os.Exit(1)
+	}
+
+	// Search config in home directory with name ".mind".
+	viper.AddConfigPath(home)
+	viper.SetConfigName(".mind")
+
+	// Setting default value of output format to 'json'
+	viper.Set("output_format", "json")
+	err = viper.WriteConfig()
+	if err != nil {
+		log.Printf("Error when writing to config file\n%v", err)
+		os.Exit(1)
+	}
+
+	return
 }

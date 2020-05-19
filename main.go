@@ -15,8 +15,13 @@ limitations under the License.
 */
 package main
 
-import "github.com/arunvm/mind/cmd"
+import (
+	"github.com/arunvm/mind/cmd"
+	log "github.com/sirupsen/logrus"
+)
 
 func main() {
+	log.SetFormatter(&log.JSONFormatter{})
+
 	cmd.Execute()
 }
