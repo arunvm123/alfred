@@ -18,13 +18,11 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"path"
 
+	"github.com/arunvm/mind/config"
 	"github.com/spf13/cobra"
 
-	homedir "github.com/mitchellh/go-homedir"
 	log "github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
 )
 
 var cfgFile string
@@ -33,6 +31,25 @@ var cfgFile string
 var rootCmd = &cobra.Command{
 	Use:   "mind",
 	Short: "A handy tool to carry out your day to day work",
+	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+
+		_, err := config.ReadConfigFile()
+		if err == nil {
+			return nil
+		}
+
+		cfg := config.Config{
+			OutputFormat: "json",
+		}
+
+		err = config.CreateConfigFile(&cfg)
+		if err != nil {
+			log.Printf("Error when writing to config file\n%v", err)
+			return err
+		}
+
+		return nil
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Println("In root command run")
 	},
@@ -48,7 +65,7 @@ func Execute() {
 }
 
 func init() {
-	cobra.OnInitialize(initConfig)
+	// cobra.OnInitialize(initConfig)
 
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
@@ -59,40 +76,4 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-}
-
-// initConfig creates a config file if it does not exist
-func initConfig() {
-	// Find home directory.
-	home, err := homedir.Dir()
-	if err != nil {
-		log.Printf("Error when fetching home directory\n%v", err)
-		os.Exit(1)
-	}
-
-	configPath := path.Join(home, ".mind.yaml")
-
-	if _, err := os.Stat(configPath); err == nil {
-		return
-	}
-
-	_, err = os.Create(configPath)
-	if err != nil {
-		log.Printf("Error when creating config file\n%v", err)
-		os.Exit(1)
-	}
-
-	// Search config in home directory with name ".mind".
-	viper.AddConfigPath(home)
-	viper.SetConfigName(".mind")
-
-	// Setting default value of output format to 'json'
-	viper.Set("output_format", "json")
-	err = viper.WriteConfig()
-	if err != nil {
-		log.Printf("Error when writing to config file\n%v", err)
-		os.Exit(1)
-	}
-
-	return
 }
