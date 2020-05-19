@@ -58,6 +58,20 @@ func CreateConfigFile(cfg *Config) error {
 	return viper.WriteConfig()
 }
 
+func (cfg *Config) SaveConfig() error {
+	// Find home directory.
+	home, err := homedir.Dir()
+	if err != nil {
+		log.Printf("Error when fetching home directory\n%v", err)
+		return err
+	}
+
+	viper.SetConfigName(".mind")
+	viper.AddConfigPath(home)
+	viper.Set("output_format", cfg.OutputFormat)
+	return viper.WriteConfig()
+}
+
 func getConfigPath() (string, error) {
 	// Find home directory.
 	home, err := homedir.Dir()

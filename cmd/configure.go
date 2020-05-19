@@ -26,13 +26,7 @@ var output_format *string
 // configureCmd represents the configure command
 var configureCmd = &cobra.Command{
 	Use:   "configure",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Configure the ouput format. It can be either 'json' or 'plain text'",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cfg, err := config.ReadConfigFile()
 		if err != nil {
@@ -40,7 +34,13 @@ to quickly create a Cobra application.`,
 			return err
 		}
 
-		log.Println("output_format: ", cfg.OutputFormat)
+		cfg.OutputFormat = *output_format
+		err = cfg.SaveConfig()
+		if err != nil {
+			log.Printf("Error when saving output format \n %v", err)
+			return err
+		}
+
 		return nil
 	},
 }
@@ -48,13 +48,5 @@ to quickly create a Cobra application.`,
 func init() {
 	rootCmd.AddCommand(configureCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// configureCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
 	output_format = configureCmd.Flags().String("output_format", "", "output format can either be 'json' or 'plain text")
 }
