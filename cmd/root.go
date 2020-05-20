@@ -40,6 +40,7 @@ var rootCmd = &cobra.Command{
 
 		cfg := config.Config{
 			OutputFormat: "json",
+			SlackToken:   "",
 		}
 
 		err = config.CreateConfigFile(&cfg)
