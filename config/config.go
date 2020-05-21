@@ -12,6 +12,7 @@ import (
 type Config struct {
 	OutputFormat string `json:"output_format"`
 	SlackToken   string `json:"slock_token"`
+	TodoistToken string `json:"todoist_token"`
 }
 
 //Read the configuration
@@ -37,6 +38,7 @@ func ReadConfigFile() (*Config, error) {
 	return &Config{
 		OutputFormat: viper.GetString("output_format"),
 		SlackToken:   viper.GetString("slack_token"),
+		TodoistToken: viper.GetString("todoist_token"),
 	}, nil
 }
 
@@ -58,6 +60,7 @@ func CreateConfigFile(cfg *Config) error {
 	viper.AddConfigPath(home)
 	viper.Set("output_format", cfg.OutputFormat)
 	viper.Set("slack_token", cfg.SlackToken)
+	viper.Set("todoist_token", cfg.TodoistToken)
 	return viper.WriteConfig()
 }
 
@@ -73,6 +76,7 @@ func (cfg *Config) SaveConfig() error {
 	viper.AddConfigPath(home)
 	viper.Set("output_format", cfg.OutputFormat)
 	viper.Set("slack_token", cfg.SlackToken)
+	viper.Set("todoist_token", cfg.TodoistToken)
 	return viper.WriteConfig()
 }
 

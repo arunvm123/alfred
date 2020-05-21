@@ -21,12 +21,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var slack_token *string
+var todoist_token *string
 
-// slackCmd represents the slack command
-var slackCmd = &cobra.Command{
-	Use:   "slack",
-	Short: "Top level command for slack with flag to authorise user to slack",
+// todoistCmd represents the todoist command
+var todoistCmd = &cobra.Command{
+	Use:   "todoist",
+	Short: "Top level command for slack with flag to authorise user to todoist",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cfg, err := config.ReadConfigFile()
 		if err != nil {
@@ -34,10 +34,10 @@ var slackCmd = &cobra.Command{
 			return err
 		}
 
-		cfg.SlackToken = *slack_token
+		cfg.TodoistToken = *todoist_token
 		err = cfg.SaveConfig()
 		if err != nil {
-			log.Printf("Error when saving slack token \n %v", err)
+			log.Printf("Error when saving todoist token \n %v", err)
 			return err
 		}
 
@@ -46,15 +46,7 @@ var slackCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(slackCmd)
+	rootCmd.AddCommand(todoistCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// slackCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	slack_token = slackCmd.Flags().String("auth_token", "", "Add token to authorise user to team")
+	todoist_token = todoistCmd.Flags().String("auth_token", "", "Add token to authorise to todoist")
 }
