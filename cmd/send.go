@@ -17,8 +17,10 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/arunvm/mind/config"
+	"github.com/arunvm/mind/summary"
 	log "github.com/sirupsen/logrus"
 	"github.com/slack-go/slack"
 	"github.com/spf13/cobra"
@@ -50,6 +52,14 @@ var sendCmd = &cobra.Command{
 		_, _, err = slackClient.PostMessage(*channelID, slack.MsgOptionText(*message, false))
 		if err != nil {
 			log.Printf("Error when sending message\n%v", err)
+			return err
+		}
+
+		return nil
+	},
+	PostRunE: func(cmd *cobra.Command, args []string) error {
+		err := summary.Save("slack", "send", fmt.Sprintf(summary.SlackSendFormat, *message, *channelID))
+		if err != nil {
 			return err
 		}
 

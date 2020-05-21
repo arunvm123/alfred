@@ -17,10 +17,12 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 
 	log "github.com/sirupsen/logrus"
 
 	"github.com/arunvm/mind/config"
+	"github.com/arunvm/mind/summary"
 	"github.com/arunvm/mind/todoist"
 	"github.com/spf13/cobra"
 )
@@ -47,6 +49,14 @@ var addCmd = &cobra.Command{
 		err = todoistClient.CreateTask(*task)
 		if err != nil {
 			log.Printf("Error when creating task\n%v", err)
+			return err
+		}
+
+		return nil
+	},
+	PostRunE: func(cmd *cobra.Command, args []string) error {
+		err := summary.Save("todoist", "add", fmt.Sprintf(summary.TodoistAddFormat, *task))
+		if err != nil {
 			return err
 		}
 

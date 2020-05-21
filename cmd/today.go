@@ -20,6 +20,7 @@ import (
 	"time"
 
 	"github.com/arunvm/mind/config"
+	"github.com/arunvm/mind/summary"
 	"github.com/arunvm/mind/todoist"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -46,6 +47,14 @@ var todayCmd = &cobra.Command{
 
 		for _, task := range *tasks {
 			fmt.Println(task.Content, task.Due.Date)
+		}
+
+		return nil
+	},
+	PostRunE: func(cmd *cobra.Command, args []string) error {
+		err := summary.Save("todoist", "today", "")
+		if err != nil {
+			return err
 		}
 
 		return nil

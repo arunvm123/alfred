@@ -19,6 +19,7 @@ import (
 	"fmt"
 
 	"github.com/arunvm/mind/config"
+	"github.com/arunvm/mind/summary"
 	log "github.com/sirupsen/logrus"
 	"github.com/slack-go/slack"
 	"github.com/spf13/cobra"
@@ -53,6 +54,14 @@ var listCmd = &cobra.Command{
 
 		for _, channel := range *channelInfo {
 			fmt.Printf("ID: %s, Name: %s, Type: %s\n", channel.ChannelID, channel.Name, channel.Type)
+		}
+
+		return nil
+	},
+	PostRunE: func(cmd *cobra.Command, args []string) error {
+		err := summary.Save("slack", "list", "")
+		if err != nil {
+			return err
 		}
 
 		return nil

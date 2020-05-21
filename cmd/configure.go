@@ -16,7 +16,10 @@ limitations under the License.
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/arunvm/mind/config"
+	"github.com/arunvm/mind/summary"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -38,6 +41,14 @@ var configureCmd = &cobra.Command{
 		err = cfg.SaveConfig()
 		if err != nil {
 			log.Printf("Error when saving output format \n %v", err)
+			return err
+		}
+
+		return nil
+	},
+	PostRunE: func(cmd *cobra.Command, args []string) error {
+		err := summary.Save("configure", "", fmt.Sprintf(summary.ConfigureStringFormat, *output_format))
+		if err != nil {
 			return err
 		}
 

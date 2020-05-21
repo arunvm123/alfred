@@ -17,6 +17,7 @@ package cmd
 
 import (
 	"github.com/arunvm/mind/config"
+	"github.com/arunvm/mind/summary"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -38,6 +39,14 @@ var todoistCmd = &cobra.Command{
 		err = cfg.SaveConfig()
 		if err != nil {
 			log.Printf("Error when saving todoist token \n %v", err)
+			return err
+		}
+
+		return nil
+	},
+	PostRunE: func(cmd *cobra.Command, args []string) error {
+		err := summary.Save("todoist", "auth", "")
+		if err != nil {
 			return err
 		}
 
