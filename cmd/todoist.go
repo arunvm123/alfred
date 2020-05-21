@@ -16,6 +16,8 @@ limitations under the License.
 package cmd
 
 import (
+	"errors"
+
 	"github.com/arunvm/mind/config"
 	"github.com/arunvm/mind/summary"
 	log "github.com/sirupsen/logrus"
@@ -29,6 +31,10 @@ var todoistCmd = &cobra.Command{
 	Use:   "todoist",
 	Short: "Top level command for slack with flag to authorise user to todoist",
 	RunE: func(cmd *cobra.Command, args []string) error {
+		if len(*todoist_token) == 0 {
+			return errors.New("Provide todoist token")
+		}
+
 		cfg, err := config.ReadConfigFile()
 		if err != nil {
 			log.Printf("Error when reading config file\n%v", err)
