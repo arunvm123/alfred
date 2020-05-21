@@ -16,6 +16,7 @@ limitations under the License.
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -35,7 +36,7 @@ var summaryCmd = &cobra.Command{
 		_, err := time.Parse("2006-01-02", *date)
 		if err != nil {
 			log.Printf("Error when parsing date\n %v", err)
-			return err
+			return errors.New("Please provide date in 'yyyy-mm-dd' format")
 		}
 
 		summaryData, err := summary.GetData(*date)
