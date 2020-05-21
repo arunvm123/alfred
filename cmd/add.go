@@ -42,7 +42,9 @@ var addCmd = &cobra.Command{
 			return err
 		}
 
-		err = todoist.CreateTask(cfg.TodoistToken, *task)
+		todoistClient := todoist.NewClient(cfg.TodoistToken)
+
+		err = todoistClient.CreateTask(*task)
 		if err != nil {
 			log.Printf("Error when creating task\n%v", err)
 			return err

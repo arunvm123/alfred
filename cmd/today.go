@@ -36,7 +36,9 @@ var todayCmd = &cobra.Command{
 			return err
 		}
 
-		tasks, err := todoist.GetTasks(cfg.TodoistToken, time.Now().Format("2006-01-02"))
+		todoistClient := todoist.NewClient(cfg.TodoistToken)
+
+		tasks, err := todoistClient.GetTasksForDate(time.Now().Format("2006-01-02"))
 		if err != nil {
 			log.Printf("Error when fetching tasks \n %v", err)
 			return err
