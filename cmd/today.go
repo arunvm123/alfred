@@ -45,6 +45,10 @@ var todayCmd = &cobra.Command{
 			return err
 		}
 
+		if len(*tasks) == 0 {
+			fmt.Println("No tasks due for today")
+		}
+
 		for _, task := range *tasks {
 			fmt.Println(task.Content, task.Due.Date)
 		}
