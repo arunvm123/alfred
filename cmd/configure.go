@@ -16,6 +16,7 @@ limitations under the License.
 package cmd
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/arunvm/mind/config"
@@ -29,8 +30,16 @@ var output_format *string
 // configureCmd represents the configure command
 var configureCmd = &cobra.Command{
 	Use:   "configure",
-	Short: "Configure the ouput format. It can be either 'json' or 'plain text'",
+	Short: "Configure the ouput format. It can be either 'json' or 'plain text' ",
 	RunE: func(cmd *cobra.Command, args []string) error {
+		if len(*output_format) == 0 {
+			return errors.New("Provide output format")
+		}
+
+		if *output_format != "json" && *output_format != "plain text" {
+			return errors.New("Please provide a valid output format")
+		}
+
 		cfg, err := config.ReadConfigFile()
 		if err != nil {
 			log.Printf("Error when reading config file\n%v", err)
