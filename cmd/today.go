@@ -50,7 +50,7 @@ var todayCmd = &cobra.Command{
 		}
 
 		for _, task := range *tasks {
-			fmt.Println(task.Content, task.Due.Date)
+			fmt.Println(task)
 		}
 
 		return nil

@@ -3,7 +3,13 @@ package todoist
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
+	"os"
 	"time"
+
+	log "github.com/sirupsen/logrus"
+
+	"github.com/arunvm/mind/config"
 )
 
 type createTaskBody struct {
@@ -75,4 +81,27 @@ func filterTasksByDate(tasks *[]Task, date string) (*[]Task, error) {
 	}
 
 	return &filteredTasks, nil
+}
+
+func (t Task) String() string {
+	cfg, err := config.ReadConfigFile()
+	if err != nil {
+		log.Printf("Error when reading config file\n%v", err)
+		os.Exit(1)
+	}
+
+	if cfg.OutputFormat == "plain text" {
+		return fmt.Sprintf("Task: %v", t.Content)
+	} else if cfg.OutputFormat == "json" {
+		// Convert structs to JSON.
+		data, err := json.MarshalIndent(t, "", "\t")
+		if err != nil {
+			log.Printf("Error when marshalling task data\n %v", err)
+			os.Exit(1)
+		}
+
+		return fmt.Sprintf("%s", string(data))
+	}
+
+	return ""
 }

@@ -50,11 +50,7 @@ var summaryCmd = &cobra.Command{
 		}
 
 		for _, s := range *summaryData {
-			fmt.Printf("Command: %v ", s.Command)
-			fmt.Printf("SubCommand: %v ", s.SubCommand)
-			fmt.Printf("Args: %v ", s.Args)
-			fmt.Printf("Time: %v ", s.Time)
-			fmt.Println()
+			fmt.Println(s)
 		}
 
 		return nil

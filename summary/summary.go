@@ -2,10 +2,16 @@ package summary
 
 import (
 	"encoding/csv"
+	"encoding/json"
+	"fmt"
+
+	log "github.com/sirupsen/logrus"
+
 	"os"
 	"path"
 	"time"
 
+	"github.com/arunvm/mind/config"
 	"github.com/mitchellh/go-homedir"
 )
 
@@ -85,4 +91,27 @@ func GetData(date string) (*[]Summary, error) {
 	}
 
 	return &summaries, nil
+}
+
+func (s Summary) String() string {
+	cfg, err := config.ReadConfigFile()
+	if err != nil {
+		log.Printf("Error when reading config file\n%v", err)
+		os.Exit(1)
+	}
+
+	if cfg.OutputFormat == "plain text" {
+		return fmt.Sprintf("Command: %v SubCommand: %v Args: %v Time: %v", s.Command, s.SubCommand, s.Args, s.Time)
+	} else if cfg.OutputFormat == "json" {
+		// Convert structs to JSON.
+		data, err := json.MarshalIndent(s, "", "\t")
+		if err != nil {
+			log.Printf("Error when marshalling summary data\n %v", err)
+			os.Exit(1)
+		}
+
+		return fmt.Sprintf("%s", string(data))
+	}
+
+	return ""
 }

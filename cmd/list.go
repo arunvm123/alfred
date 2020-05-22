@@ -16,7 +16,9 @@ limitations under the License.
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 
 	"github.com/arunvm/mind/config"
 	"github.com/arunvm/mind/summary"
@@ -53,7 +55,7 @@ var listCmd = &cobra.Command{
 		}
 
 		for _, channel := range *channelInfo {
-			fmt.Printf("ID: %s, Name: %s, Type: %s\n", channel.ChannelID, channel.Name, channel.Type)
+			fmt.Println(channel)
 		}
 
 		return nil
@@ -73,9 +75,9 @@ func init() {
 }
 
 type channelInfo struct {
-	ChannelID string
-	Name      string
-	Type      string
+	ChannelID string `json:"channel_id"`
+	Name      string `json:"name"`
+	Type      string `json:"type"`
 }
 
 func getChannelInfo(slackClient *slack.Client, conversations *[]slack.Channel) (*[]channelInfo, error) {
@@ -115,4 +117,28 @@ func getChannelInfo(slackClient *slack.Client, conversations *[]slack.Channel) (
 	}
 
 	return &ci, nil
+}
+
+func (c channelInfo) String() string {
+	cfg, err := config.ReadConfigFile()
+	if err != nil {
+		log.Printf("Error when reading config file%v", err)
+		os.Exit(1)
+	}
+
+	if cfg.OutputFormat == "plain text" {
+		return fmt.Sprintf("ID: %s, Name: %s, Type: %s", c.ChannelID, c.Name, c.Type)
+	} else if cfg.OutputFormat == "json" {
+		// Convert structs to JSON.
+		data, err := json.MarshalIndent(c, "", "\t")
+		if err != nil {
+			log.Printf("Error when marshalling channel data\n %v", err)
+			os.Exit(1)
+		}
+
+		return fmt.Sprintf("%s", string(data))
+	}
+
+	return ""
+
 }
