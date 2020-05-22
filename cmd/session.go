@@ -21,7 +21,8 @@ import (
 
 // sessionCmd represents the session command
 var sessionCmd = &cobra.Command{
-	Use: "session",
+	Use:   "session",
+	Short: "Top level command for session info",
 }
 
 func init() {

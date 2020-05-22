@@ -29,6 +29,9 @@ var (
 	SessionSummaryFormat  = "date=%s"
 )
 
+// Save appends the data to the file specified by todays date.
+// The summary is stored in the folder '.mind_summary' and each day
+// will have a new file for it. The .mind_summary will be created in $HOME
 func Save(command, subcommand, args string) error {
 	home, err := homedir.Dir()
 	if err != nil {

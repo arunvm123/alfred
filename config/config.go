@@ -15,7 +15,8 @@ type Config struct {
 	TodoistToken string `json:"todoist_token"`
 }
 
-//Read the configuration
+//ReadConfigFile reads the configuration file from the
+// default location which is '$HOME/.mind.yaml'
 func ReadConfigFile() (*Config, error) {
 	configPath, err := getConfigPath()
 	if err != nil {
@@ -42,7 +43,8 @@ func ReadConfigFile() (*Config, error) {
 	}, nil
 }
 
-//Write data of config to the configuration file
+//CreateConfigFile creates the configuration file and initialises it with default value.
+// Default location of config file is
 func CreateConfigFile(cfg *Config) error {
 	// Find home directory.
 	home, err := homedir.Dir()
@@ -64,6 +66,7 @@ func CreateConfigFile(cfg *Config) error {
 	return viper.WriteConfig()
 }
 
+// SaveConfig updates the config file with the given values
 func (cfg *Config) SaveConfig() error {
 	// Find home directory.
 	home, err := homedir.Dir()

@@ -29,7 +29,7 @@ import (
 // todayCmd represents the today command
 var todayCmd = &cobra.Command{
 	Use:   "today",
-	Short: "A brief description of your command",
+	Short: "Retrieves tasks due for today",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cfg, err := config.ReadConfigFile()
 		if err != nil {

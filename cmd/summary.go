@@ -68,5 +68,5 @@ var summaryCmd = &cobra.Command{
 func init() {
 	sessionCmd.AddCommand(summaryCmd)
 
-	date = summaryCmd.Flags().String("date", "", "provide date in the format yyyy-mm-dd to retrieve the specified date's summary")
+	date = summaryCmd.Flags().String("date", "", "Provide date in the format yyyy-mm-dd to retrieve the specified date's summary")
 }

@@ -30,7 +30,7 @@ import (
 // listCmd represents the list command
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "Retrieves list of all channels and their channel ID. Channel ID is rewuired to send messages to that channel",
+	Short: "Retrieves list of all channels and their channel ID. Channel ID is required to send messages to that channel",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cfg, err := config.ReadConfigFile()
 		if err != nil {

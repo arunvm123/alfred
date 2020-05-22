@@ -52,7 +52,7 @@ var rootCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Println("In root command run")
+		return
 	},
 }
 

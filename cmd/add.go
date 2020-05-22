@@ -78,5 +78,5 @@ func init() {
 	todoistCmd.AddCommand(addCmd)
 
 	task = addCmd.Flags().String("task", "", "Provide content for task")
-	dueDate = addCmd.Flags().String("due_date", "", "provide date in the format yyyy-mm-dd to set a due date for the task")
+	dueDate = addCmd.Flags().String("due_date", "", "Provide date in the format yyyy-mm-dd to set a due date for the task")
 }
