@@ -18,6 +18,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"time"
 
 	log "github.com/sirupsen/logrus"
 
@@ -28,6 +29,7 @@ import (
 )
 
 var task *string
+var dueDate *string
 
 // addCmd represents the add command
 var addCmd = &cobra.Command{
@@ -38,6 +40,14 @@ var addCmd = &cobra.Command{
 			return errors.New("Please provide task description")
 		}
 
+		if len(*dueDate) != 0 {
+			_, err := time.Parse("2006-01-02", *dueDate)
+			if err != nil {
+				log.Printf("Error when parsing date\n %v", err)
+				return errors.New("Please provide date in 'yyyy-mm-dd' format")
+			}
+		}
+
 		cfg, err := config.ReadConfigFile()
 		if err != nil {
 			log.Printf("Error when reading config file \n %v", err)
@@ -46,7 +56,7 @@ var addCmd = &cobra.Command{
 
 		todoistClient := todoist.NewClient(cfg.TodoistToken)
 
-		err = todoistClient.CreateTask(*task)
+		err = todoistClient.CreateTask(*task, *dueDate)
 		if err != nil {
 			log.Printf("Error when creating task\n%v", err)
 			return err
@@ -68,4 +78,5 @@ func init() {
 	todoistCmd.AddCommand(addCmd)
 
 	task = addCmd.Flags().String("task", "", "Provide content for task")
+	dueDate = addCmd.Flags().String("due_date", "", "provide date in the format yyyy-mm-dd to set a due date for the task")
 }

@@ -14,6 +14,7 @@ import (
 
 type createTaskBody struct {
 	Content string `json:"content"`
+	DueDate string `json:"due_date"`
 }
 
 type Task struct {
@@ -26,9 +27,10 @@ type Due struct {
 	String string `json:"string"`
 }
 
-func (c *Client) CreateTask(task string) error {
+func (c *Client) CreateTask(task, date string) error {
 	data := createTaskBody{
 		Content: task,
+		DueDate: date,
 	}
 
 	byteData, err := json.Marshal(&data)
