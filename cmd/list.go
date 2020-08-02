@@ -20,8 +20,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/arunvm/mind/config"
-	"github.com/arunvm/mind/summary"
+	"github.com/arunvm/alfred/config"
+	"github.com/arunvm/alfred/summary"
 	log "github.com/sirupsen/logrus"
 	"github.com/slack-go/slack"
 	"github.com/spf13/cobra"

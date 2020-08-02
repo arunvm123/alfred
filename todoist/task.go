@@ -9,7 +9,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/arunvm/mind/config"
+	"github.com/arunvm/alfred/config"
 )
 
 type createTaskBody struct {

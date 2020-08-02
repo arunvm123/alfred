@@ -16,7 +16,7 @@ type Config struct {
 }
 
 //ReadConfigFile reads the configuration file from the
-// default location which is '$HOME/.mind.yaml'
+// default location which is '$HOME/.alfred.yaml'
 func ReadConfigFile() (*Config, error) {
 	configPath, err := getConfigPath()
 	if err != nil {
@@ -53,12 +53,12 @@ func CreateConfigFile(cfg *Config) error {
 		return err
 	}
 
-	_, err = os.Create(path.Join(home, ".mind.yaml"))
+	_, err = os.Create(path.Join(home, ".alfred.yaml"))
 	if err != nil {
 		return err
 	}
 
-	viper.SetConfigName(".mind")
+	viper.SetConfigName(".alfred")
 	viper.AddConfigPath(home)
 	viper.Set("output_format", cfg.OutputFormat)
 	viper.Set("slack_token", cfg.SlackToken)
@@ -75,7 +75,7 @@ func (cfg *Config) SaveConfig() error {
 		return err
 	}
 
-	viper.SetConfigName(".mind")
+	viper.SetConfigName(".alfred")
 	viper.AddConfigPath(home)
 	viper.Set("output_format", cfg.OutputFormat)
 	viper.Set("slack_token", cfg.SlackToken)
@@ -91,6 +91,6 @@ func getConfigPath() (string, error) {
 		return "", err
 	}
 
-	return path.Join(home, ".mind.yaml"), nil
+	return path.Join(home, ".alfred.yaml"), nil
 
 }

@@ -1,4 +1,4 @@
-# Mind
+# alfred
 
 A command line tool to interact with slack and todoist. Helps you organise your day to day activities
 
@@ -14,8 +14,8 @@ Move to the root of the directory and run the following command
 A handy tool to carry out your day to day work
 
 Usage:
-  mind [flags]
-  mind [command]
+  alfred [flags]
+  alfred [command]
 
 Available Commands:
   configure   Configure the ouput format. It can be either 'json' or 'plain text' 
@@ -25,8 +25,8 @@ Available Commands:
   todoist     Top level command for slack with flag to authorise user to todoist
 
 Flags:
-  -h, --help     help for mind
+  -h, --help     help for alfred
   -t, --toggle   Help message for toggle
 
-Use "mind [command] --help" for more information about a command.
+Use "alfred [command] --help" for more information about a command.
 ```

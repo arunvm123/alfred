@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/arunvm/mind/config"
+	"github.com/arunvm/alfred/config"
 	"github.com/spf13/cobra"
 
 	log "github.com/sirupsen/logrus"
@@ -29,7 +29,7 @@ var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "mind",
+	Use:   "alfred",
 	Short: "A handy tool to carry out your day to day work",
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 
@@ -72,7 +72,7 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.mind.yaml)")
+	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.alfred.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.

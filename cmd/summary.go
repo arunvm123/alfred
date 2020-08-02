@@ -24,7 +24,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/arunvm/mind/summary"
+	"github.com/arunvm/alfred/summary"
 	"github.com/spf13/cobra"
 )
 
@@ -33,7 +33,7 @@ var date *string
 // summaryCmd represents the summary command
 var summaryCmd = &cobra.Command{
 	Use:   "summary",
-	Short: "Retrieves summary of mind command usage for the specified date",
+	Short: "Retrieves summary of alfred command usage for the specified date",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		_, err := time.Parse("2006-01-02", *date)
 		if err != nil {

@@ -1,4 +1,4 @@
-module github.com/arunvm/mind
+module github.com/arunvm/alfred
 
 go 1.12
 

@@ -19,9 +19,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/arunvm/mind/config"
-	"github.com/arunvm/mind/summary"
-	"github.com/arunvm/mind/todoist"
+	"github.com/arunvm/alfred/config"
+	"github.com/arunvm/alfred/summary"
+	"github.com/arunvm/alfred/todoist"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

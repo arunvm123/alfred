@@ -11,7 +11,7 @@ import (
 	"path"
 	"time"
 
-	"github.com/arunvm/mind/config"
+	"github.com/arunvm/alfred/config"
 	"github.com/mitchellh/go-homedir"
 )
 
@@ -30,15 +30,15 @@ var (
 )
 
 // Save appends the data to the file specified by todays date.
-// The summary is stored in the folder '.mind_summary' and each day
-// will have a new file for it. The .mind_summary will be created in $HOME
+// The summary is stored in the folder '.alfred_summary' and each day
+// will have a new file for it. The .alfred_summary will be created in $HOME
 func Save(command, subcommand, args string) error {
 	home, err := homedir.Dir()
 	if err != nil {
 		return err
 	}
 
-	summaryDirectory := path.Join(home, ".mind_summary")
+	summaryDirectory := path.Join(home, ".alfred_summary")
 
 	err = os.MkdirAll(summaryDirectory, os.ModePerm)
 	if err != nil {
@@ -69,7 +69,7 @@ func GetData(date string) (*[]Summary, error) {
 		return nil, err
 	}
 
-	file, err := os.OpenFile(path.Join(home, ".mind_summary", date+".csv"), os.O_RDONLY, 0666)
+	file, err := os.OpenFile(path.Join(home, ".alfred_summary", date+".csv"), os.O_RDONLY, 0666)
 	if err != nil {
 		return nil, err
 	}
