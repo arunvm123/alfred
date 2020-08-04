@@ -44,7 +44,6 @@ func ReadConfigFile() (*Config, error) {
 }
 
 //CreateConfigFile creates the configuration file and initialises it with default value.
-// Default location of config file is
 func CreateConfigFile(cfg *Config) error {
 	// Find home directory.
 	home, err := homedir.Dir()
